@@ -175,7 +175,7 @@ def get_user_scrapes(*, user):
     return data
 
 
-def get_scrape_detail(*, user, scrape_id):
+def get_user_scrape_detail(*, user, scrape_id):
     try:
         scrape = WikiScrape.objects.get(id=scrape_id, user=user)
         data = {

@@ -5,7 +5,7 @@ from django.views.decorators.http import require_POST, require_GET
 from django.contrib.auth.decorators import login_required
 import json
 import datetime
-from .utils import scrape, llm_response, session_token, add_user, check_user, add_wiki_quiz, get_user_scrapes, get_scrape_detail
+from .utils import scrape, llm_response, session_token, add_user, check_user, add_wiki_quiz, get_user_scrapes, get_user_scrape_detail
 
 
 # Create your views here.
@@ -184,7 +184,7 @@ def get_scrapes(request):
 @login_required
 @require_GET
 def get_scrape_detail(request, scrape_id):
-    data = get_scrape_detail(user=request.user, scrape_id=scrape_id)
+    data = get_user_scrape_detail(user=request.user, scrape_id=scrape_id)
     if data is None:
         return JsonResponse({"error": "Not found"}, status=404)
     return JsonResponse(data)
