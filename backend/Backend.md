@@ -22,6 +22,7 @@ Configure the following in `.env` (based on `.env.example`):
 - `OLLAMA_BASE_URL`: Base URL for Ollama LLM (e.g., `http://localhost:11434`).
 - `GEMINI_API_KEY`: API key for Google Gemini (optional, if switching from Ollama).
 - `JWT_SECRET_TOKEN`: Secret for JWT token generation.
+- `FRONTEND_URL`: Frontend URL for CORS allowed origins (e.g., `http://localhost:5173`).
 
 ## Models
 

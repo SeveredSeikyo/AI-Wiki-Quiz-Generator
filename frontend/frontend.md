@@ -85,9 +85,14 @@ The application will run on `http://localhost:5173` and proxy API calls to `http
 ## Configuration
 
 ### API Base URL
-The API base URL is configured in `App.tsx`:
+The API base URL is configured using an environment variable in `App.tsx`:
 ```typescript
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000/api';
+```
+
+Create a `.env` file in the frontend root with:
+```
+VITE_BACKEND_URL=http://localhost:8000/api
 ```
 
 ### CSRF Token Handling
