@@ -1,0 +1,277 @@
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f4f4f4;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+nav button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+nav button:hover,
+nav button.active {
+  background-color: #2980b9;
+}
+
+/* Auth */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.auth-form {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.auth-form button:hover {
+  background-color: #2980b9;
+}
+
+/* Tabs */
+.generate-tab,
+.history-tab {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-section input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.input-section button {
+  padding: 10px 20px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.input-section button:hover {
+  background-color: #229954;
+}
+
+/* Quiz Display */
+.quiz-display {
+  margin-top: 20px;
+}
+
+.quiz-display h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.quiz-display p {
+  margin-bottom: 15px;
+}
+
+.entities,
+.sections,
+.quiz,
+.related-topics {
+  margin-bottom: 20px;
+}
+
+.entities h3,
+.sections h3,
+.quiz h3,
+.related-topics h3 {
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+.sections ul,
+.related-topics ul {
+  padding-left: 20px;
+}
+
+.question-card {
+  background: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border-left: 4px solid #3498db;
+}
+
+.question-card h4 {
+  margin-bottom: 10px;
+}
+
+.question-card ul {
+  margin-bottom: 10px;
+}
+
+.question-card li {
+  margin-bottom: 5px;
+}
+
+.question-card li.correct {
+  font-weight: bold;
+  color: #27ae60;
+}
+
+/* History Table */
+.history-tab table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-tab th,
+.history-tab td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.history-tab th {
+  background-color: #f2f2f2;
+}
+
+.history-tab button {
+  padding: 5px 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.history-tab button:hover {
+  background-color: #2980b9;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .input-section {
+    flex-direction: column;
+  }
+
+  nav {
+    flex-direction: column;
+  }
+
+  .history-tab table {
+    font-size: 14px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+  }
+}
