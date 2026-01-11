@@ -16,11 +16,11 @@ def register(request):
 
     try:
         data = json.loads(request.body)
-        username = data.username
-        password = data.password.encode('utf-8')
-        email = data.password
+        username = data.get('username')
+        password = data.get('password')
+        email = data.get('email')
 
-        if not all ([username,password,email]):
+        if not all([username, password, email]):
             return JsonResponse({"error": "Missing Fields"}, status=400)
 
         result = add_user(
@@ -48,7 +48,7 @@ def register(request):
             key='access_token',
             value=token,
             httponly=True,
-            secure=True,
+            secure=False,  # Changed to False for localhost development
             samesite='Lax',
             max_age=86400
         )
@@ -57,6 +57,7 @@ def register(request):
 
     except Exception:
         return JsonResponse({'error': 'An Internal Error Occurred'}, status=500)
+
 
 
 @ensure_csrf_cookie
@@ -87,7 +88,7 @@ def login(request):
             key='access_token',
             value=token,
             httponly=True,
-            secure=True,
+            secure=False,  # Changed to False for localhost development
             samesite='Lax',
             max_age=86400
         )
@@ -116,15 +117,34 @@ def scrape_wiki(request):
         llm_output = llm_response(llm_input)
 
         #Parse AI JSON
-        ai_data = json.loads(llm_output)
+        try:
+            ai_data = json.loads(llm_output)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON response from AI"}, status=500)
+
+        # Validate AI response structure
+        required_keys = ['quiz', 'key_entities', 'related_topics', 'summary']
+        if not all(key in ai_data for key in required_keys):
+            return JsonResponse({"error": "AI response missing required fields"}, status=500)
+
+        if not isinstance(ai_data.get('quiz'), list):
+            return JsonResponse({"error": "AI quiz data must be a list"}, status=500)
+
+        # Validate quiz structure
+        for q in ai_data['quiz']:
+            if not all(k in q for k in ['question', 'options', 'answer', 'explanation']):
+                return JsonResponse({"error": "Quiz item missing required fields"}, status=500)
 
         #Save to DB
-        wiki = add_wiki_quiz(
-            user=request.user,
-            url=url,
-            scrape_data=scrape_data,
-            ai_data=ai_data
-        )
+        try:
+            wiki = add_wiki_quiz(
+                user=request.user,
+                url=url,
+                scrape_data=scrape_data,
+                ai_data=ai_data
+            )
+        except Exception as e:
+            return JsonResponse({"error": f"Database error: {str(e)}"}, status=500)
 
         response_data = {
             "id": wiki.id,

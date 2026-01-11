@@ -40,15 +40,14 @@ system_message = SystemMessage(
     " \
     You are a data extraction assistant. Analyze the provided Wikipedia introduction and return JSON only. \
     Return keys in this exact order: 'quiz', 'key_entities', 'related_topics', 'summary'. \
-    'quiz': Generate 3–4 MCQs with 4 options, 1 correct answer, and a brief explanation and the difficulty of the question (easy, medium or hard). \
-    'key_entities': Must be a JSON object with keys 'people', 'organizations', 'locations'. \
-    'related_topics': List 3–6 relevant topics from the text only. \
-    'summary': Write a concise 2–3 sentence summary based strictly on the text. \
+    'quiz': Generate 3–4 MCQs as a JSON array. Each quiz item must be a JSON object with these exact keys: 'question' (string), 'options' (array of 4 strings), 'answer' (string, must be one of the options), 'explanation' (string), 'difficulty' (string: 'easy', 'medium', or 'hard'). \
+    'key_entities': Must be a JSON object with keys 'people', 'organizations', 'locations'. Each value should be an array of strings. \
+    'related_topics': List 3–6 relevant topics from the text only as a JSON array of strings. \
+    'summary': Write a concise 2–3 sentence summary based strictly on the text as a string. \
     Use ONLY the provided text. Do not add external knowledge. \
     Return ONLY valid JSON. No markdown, no filler text. \
-    "
-
-)
+    Example quiz item: {'question': 'What is Python?', 'options': ['A programming language', 'A snake', 'A movie', 'A book'], 'answer': 'A programming language', 'explanation': 'Python is a programming language.', 'difficulty': 'easy'} \
+    ")
 
 
 headers = {
@@ -146,12 +145,16 @@ def add_wiki_quiz(*, user, url, scrape_data, ai_data):
         )
 
         for q in ai_data.get("quiz", []):
+            difficulty = q.get("difficulty", "easy").lower()
+            if difficulty not in ["easy", "medium", "hard"]:
+                difficulty = "easy"
+            
             Quiz.objects.create(
                 scrape=wiki,
                 question=q["question"],
                 options=q["options"],
                 answer=q["answer"],
-                difficulty=q.get("difficulty", Quiz.Difficulty.EASY),
+                difficulty=difficulty,
                 explanation=q["explanation"]
             )
 

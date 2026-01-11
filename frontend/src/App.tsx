@@ -65,6 +65,32 @@ function App() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      // Clear local state
+      setIsLoggedIn(false);
+      setCurrentTab('generate');
+      setUrl('');
+      setQuizData(null);
+      setHistory([]);
+      setSelectedQuiz(null);
+      setShowModal(false);
+      setLoginData({ username: '', password: '', email: '' });
+      
+      // Clear cookies by making a request that will fail but clear session
+      await fetch(`${API_BASE}/logout`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'X-CSRFToken': getCSRFToken() || '',
+        },
+      });
+    } catch (error) {
+      // Even if logout request fails, clear local state
+      console.log('Logout completed locally');
+    }
+  };
+
   const getCSRFToken = () => {
     return document.cookie
       .split("; ")
@@ -161,13 +187,6 @@ function App() {
             onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
             required
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={loginData.password}
-            onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-            required
-          />
           {isRegister && (
             <input
               type="email"
@@ -177,6 +196,13 @@ function App() {
               required
             />
           )}
+          <input
+            type="password"
+            placeholder="Password"
+            value={loginData.password}
+            onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+            required
+          />
           <button type="submit" disabled={authLoading}>
             {authLoading ? 'Loading...' : (isRegister ? 'Register' : 'Login')}
           </button>
@@ -204,6 +230,12 @@ function App() {
             onClick={() => setCurrentTab('history')}
           >
             Past Quizzes
+          </button>
+          <button
+            className="logout-btn"
+            onClick={handleLogout}
+          >
+            Logout
           </button>
         </nav>
       </header>
