@@ -9,6 +9,37 @@ This Django project provides a backend API for scraping Wikipedia pages, generat
 - **requirements.txt**: Python dependencies.
 - **.env**: Environment variables (see `.env.example` for template).
 - **backend.http**: Example HTTP requests for testing.
+- **vercel.json**: Vercel deployment configuration.
+- **api/index.py**: Vercel serverless function entry point.
+
+## Deployment
+
+### Vercel Deployment
+
+This backend is configured for deployment on Vercel. The `vercel.json` file contains the deployment configuration, and `api/index.py` serves as the serverless function entry point.
+
+#### Prerequisites
+
+1. **PostgreSQL Database**: Since Vercel doesn't provide PostgreSQL, you need to set up an external database service such as:
+   - [Neon](https://neon.tech)
+   - [Supabase](https://supabase.com)
+   - [Railway](https://railway.app)
+   - [ElephantSQL](https://www.elephantsql.com)
+
+2. **Environment Variables**: Set the following in your Vercel project settings:
+   - All variables from `.env.example`
+   - Database connection details for your external PostgreSQL service
+   - `DEBUG=False` for production
+   - `ALLOWED_HOSTS` including your Vercel domain
+
+#### Deployment Steps
+
+1. Push your code to GitHub.
+2. Connect your GitHub repository to Vercel.
+3. Set environment variables in Vercel dashboard.
+4. Deploy.
+
+The API will be available at `https://your-project.vercel.app/api/`.
 
 ## Environment Variables
 
@@ -23,6 +54,8 @@ Configure the following in `.env` (based on `.env.example`):
 - `GEMINI_API_KEY`: API key for Google Gemini (optional, if switching from Ollama).
 - `JWT_SECRET_TOKEN`: Secret for JWT token generation.
 - `FRONTEND_URL`: Frontend URL for CORS allowed origins (e.g., `http://localhost:5173`).
+- `DEBUG`: Set to `True` for development, `False` for production.
+- `ALLOWED_HOSTS`: Comma-separated list of allowed hosts (e.g., `localhost,127.0.0.1,.vercel.app`).
 
 ## Models
 
