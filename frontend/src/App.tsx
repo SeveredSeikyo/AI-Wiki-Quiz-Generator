@@ -103,6 +103,15 @@ function App() {
     setAuthLoading(true);
     try {
       const endpoint = isRegister ? 'register' : 'login';
+      
+      // For registration, first make a GET request to get CSRF token
+      if (isRegister) {
+        await fetch(`${API_BASE}/register`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+      }
+      
       const body = isRegister
         ? { username: loginData.username, password: loginData.password, email: loginData.email }
         : { username: loginData.username, password: loginData.password };
